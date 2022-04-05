@@ -1,0 +1,76 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:13
+    ports:
+      - 5432:5432
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - supertokens
+
+  # using https://mocksaml.com/api/saml/sso for dev
+  jackson:
+    image: "boxyhq/jackson:1.0.0"
+    platform: linux/amd64
+    depends_on:
+      - postgres
+    ports:
+      - 5225:5225
+    volumes:
+      - ./configs:/configs
+    environment:
+      - JACKSON_API_KEYS=secret
+      - DB_ENGINE=sql
+      - DB_TYPE=postgres
+      - DB_URL=postgres://postgres:postgres@postgres:5432/postgres
+      - NEXTAUTH_SECRET=SokqwA3IbdOnw7JRqq9EEesimRn1qKNCshPT5gnlMmE=
+      - NEXTAUTH_ACL=*
+      - NEXTAUTH_URL=http://localhost:5225
+      - SMTP_HOST=maildev
+      - SMTP_PORT=1025
+      - SMTP_FROM=noreply@boxysupertokens.com
+      - PRE_LOADED_CONFIG=/configs
+    networks:
+      - supertokens
+
+  # maildev is only present to enable logging in to the jackson admin web ui
+  # if you want to check the
+  # see README.md for usage
+  maildev:
+    image: soulteary/maildev:latest
+    ports:
+      - 1080:1080
+      - 1025:1025
+    networks:
+      - supertokens
+
+  supertoken:
+    image: "registry.supertokens.io/supertokens/supertokens-postgresql"
+    depends_on:
+      - postgres
+    ports:
+      - 3567:3567
+    environment:
+      - POSTGRESQL_CONNECTION_URI=postgres://postgres:postgres@postgres:5432/postgres
+    networks:
+      - supertokens
+
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - ./app:/app
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - 3000:3000
+    networks:
+      - supertokens
+
+networks:
+  supertokens:
