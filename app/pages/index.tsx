@@ -6,6 +6,7 @@ import {useRouter} from 'next/router'
 import dynamic from 'next/dynamic'
 import ThirdPartyEmailPassword from 'supertokens-auth-react/recipe/thirdpartyemailpassword'
 import {useSessionContext} from 'supertokens-auth-react/lib/build/recipe/session'
+import {useEffect, useState} from 'react'
 
 export const ThirdPartyEmailPasswordAuthNoSSR = dynamic(
   new Promise((res) =>
@@ -20,6 +21,10 @@ interface HomeProps {
 const Home: NextPage<HomeProps> = () => {
   const router = useRouter()
   const {userId, accessTokenPayload} = useSessionContext()
+  const [userData, setUserData] = useState(undefined)
+  useEffect(() => {
+    fetch('/api/user').then(udata => udata.json().then(u => setUserData(u)))
+  }, [])
   return (
       <div className={styles.container}>
         <Head>
@@ -33,21 +38,16 @@ const Home: NextPage<HomeProps> = () => {
             Welcome to <a href="https://nextjs.org">Next.js!</a>
           </h1>
 
-          <p className={styles.description}>
-            Get started by editing{' '}
-            <code className={styles.code}>login</code>
-          </p>
-
           <div className={styles.grid}>
-            <a href="https://nextjs.org/docs" className={styles.card}>
-              <h2>User &rarr;</h2>
+            <div className={styles.card}>
+              <h2>User</h2>
               <p>{userId}</p>
-            </a>
+            </div>
 
-            <a href="https://nextjs.org/learn" className={styles.card}>
-              <h2>Token Payload &rarr;</h2>
-              <p>{accessTokenPayload}</p>
-            </a>
+            <div className={styles.card}>
+              <h2>User data</h2>
+              <pre>{JSON.stringify(userData, null, '  ')}</pre>
+            </div>
           </div>
         </main>
 
