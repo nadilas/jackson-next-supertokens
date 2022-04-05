@@ -2,6 +2,7 @@ import SessionNode from 'supertokens-node/recipe/session'
 import { appInfo } from './appInfo'
 import { TypeInput } from "supertokens-node/types";
 import ThirdPartyEmailPassword from 'supertokens-node/recipe/thirdpartyemailpassword'
+import axios from 'axios'
 
 const jacksonApiUrl = 'http://jackson:5225'
 const jacksonAuthUrl = 'http://localhost:5225'
