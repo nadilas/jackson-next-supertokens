@@ -1,11 +1,11 @@
 import ThirdPartyEmailPasswordReact from 'supertokens-auth-react/recipe/thirdpartyemailpassword'
 import SessionReact from 'supertokens-auth-react/recipe/session'
-import { appInfo } from './appInfo'
+import {appInfo} from './appInfo'
 
 export const frontendConfig = () => ({
   appInfo,
-    recipeList: [
-      ThirdPartyEmailPasswordReact.init({
+  recipeList: [
+    ThirdPartyEmailPasswordReact.init({
       preAPIHook: async (context) => {
         let url = new URL(context.url)
         let action = context.action
@@ -35,6 +35,6 @@ export const frontendConfig = () => ({
         ]
       }
     }),
-      SessionReact.init()
+    SessionReact.init()
   ]
 })

@@ -22,11 +22,11 @@ export const backendConfig = (): TypeInput => {
               ...originalImplementation,
               authorisationUrlGET: async (input) => {
                 input.userContext.request = input.options.req.original
-                return originalImplementation.authorisationUrlGET(input);
+                return originalImplementation.authorisationUrlGET!(input);
               },
               thirdPartySignInUpPOST: async (input) => {
                 input.userContext.request = input.options.req.original
-                return originalImplementation.thirdPartySignInUpPOST(input);
+                return originalImplementation.thirdPartySignInUpPOST!(input);
               },
             };
           },
@@ -46,8 +46,8 @@ export const backendConfig = (): TypeInput => {
                     client_id,
                     client_secret: "dummy",
                     grant_type: "authorization_code",
-                    redirect_uri: redirectURI,
-                    code: authCodeFromRequest,
+                    redirect_uri: redirectURI!,
+                    code: authCodeFromRequest!,
                   }
                 },
                 authorisationRedirect: {
@@ -67,13 +67,15 @@ export const backendConfig = (): TypeInput => {
                       Authorization: `Bearer ${accessTokenAPIResponse.access_token}`,
                     },
                   });
-                  return {
+                  const info = {
                     id: profile.data.id,
                     email: {
                       id: profile.data.email,
                       isVerified: true
                     }
-                  };
+                  }
+                  console.log(`created profile info`, info)
+                  return info
                 }
               }
             }
