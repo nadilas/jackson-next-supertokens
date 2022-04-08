@@ -1,5 +1,5 @@
 export const appInfo = {
-  appName: 'SAML Jackson',
+  appName: 'SAML Jackson + SuperTokens',
   apiBasePath: '/api/auth',
   apiDomain: getApiDomain(),
   websiteDomain: getWebsiteDomain(),
