@@ -9,13 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@trpc/client": "^9.22.0",
+    "@trpc/next": "^9.22.0",
+    "@trpc/react": "^9.22.0",
+    "@trpc/server": "^9.22.0",
     "axios": "^0.26.1",
     "next": "12.1.4",
     "nextjs-cors": "^2.1.1",
     "react": "18.0.0",
     "react-dom": "18.0.0",
+    "react-query": "^3.38.0",
     "supertokens-auth-react": "^0.20.2",
-    "supertokens-node": "^9.1.2"
+    "supertokens-node": "^9.1.2",
+    "zod": "^3.14.4"
   },
   "devDependencies": {
     "@types/node": "17.0.23",
